@@ -6,7 +6,7 @@ import os
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
-
+from module import func
 # from invoiceapi.models import users
 # from module import func
 
@@ -28,8 +28,13 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 mtext = event.message.text
-                if mtext == '幹':
+                if mtext == '你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
+                elif mtext == '@使用說明':
+                    func.sendUse(event,mtext)
+                else:
+                    func.sendLUIS(event,mtext)
+
         return HttpResponse()
 
     else:
