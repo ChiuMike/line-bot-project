@@ -29,8 +29,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 mtext = event.message.text
                 if mtext == '幹':
-                    texe="你好"
-                    line_bot_api.reply_message(event.reply_token,texe);
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
         return HttpResponse()
 
     else:
