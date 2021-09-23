@@ -30,6 +30,7 @@ def callback(request):
         
         for event in events:
             if isinstance(event, MessageEvent):
+                print(event.message)
                 mtext = event.message.text
                 r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
                 result = r.json()
@@ -44,10 +45,10 @@ def callback(request):
                     func.sendLUIS(event,result)
                 else:
                     func.getstore(event,mtext)
-            elif isinstance(event, LocationMessage):
-                if event.message.type=='location':
-                    address = event.message.address
-                    func.getstore(event,address)                  
+            # elif isinstance(event, LocationMessage):
+            #     if event.message.type=='location':
+            #         address = event.message.address
+            #         func.getstore(event,address)                  
         return HttpResponse()
 
     else:
