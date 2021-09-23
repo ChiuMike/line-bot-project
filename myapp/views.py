@@ -32,13 +32,14 @@ def callback(request):
                 mtext = event.message.text
                 r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
                 result = r.json()
+                score=result['prediction']['intents']['縣市天氣']['score']
                 # locationtext=event.message.LocationMessage
                 if mtext == '你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 elif mtext =='使用說明':
                     func.sendUse(event,mtext)          
-                # elif result['prediction']['topIntent']=='縣市天氣':
-                #     func.sendLUIS(event,result)
+                elif score>=0.95:
+                    func.sendLUIS(event,result)
                 else:
                     func.getstore(event,mtext)
 
