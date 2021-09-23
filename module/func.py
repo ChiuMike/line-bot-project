@@ -33,7 +33,7 @@ def getstore(event,mtext):
             opentime=i.find('div',class_="jsx-3440511973 info").text
             category=i.find('div',class_="jsx-3440511973 category-row")
             topic=category.find_all('a',class_="jsx-3440511973 category")
-            res=title+'(' +topic[1].text+')\n'+opentime+'\n地址:'+address+'\n'
+            res=title+'(' +topic[1].text+')\n'+opentime+'\n地址:'+address+'\n\n'
             store.append(res)
             if len(store)>9:
                 break
