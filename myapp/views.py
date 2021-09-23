@@ -37,14 +37,14 @@ def callback(request):
                 score=result['prediction']['intents']['縣市天氣']['score']
                 en=result['prediction']['entities']
                 # locationtext=event.message.LocationMessage
-                if mtext == '你好':
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
+                if event.message.type=='location':
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='位置'))
                 elif mtext =='使用說明':
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif event.message.type=='location':
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='位置'))
+                elif mtext=='你好':
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 else:
                     func.getstore(event,mtext)
             # elif isinstance(event, LocationMessage):
