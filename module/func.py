@@ -23,7 +23,7 @@ def getstore(event,mtext):
         url='https://ifoodie.tw/explore/list?place=current&latlng='+str(lat)+','+str(lng)+'&sortby=rating'
         r=requests.get(url)
         resp=BeautifulSoup(r.text,'lxml')
-        text=[]
+        store=[]
         content=resp.find_all('div',class_="jsx-3440511973 info-rows")
 
         for i in content:
@@ -34,15 +34,15 @@ def getstore(event,mtext):
             category=i.find('div',class_="jsx-3440511973 category-row")
             topic=category.find_all('a',class_="jsx-3440511973 category")
             res=title+'(' +topic[1].text+')'+spend+'\n'+opentime+'\n地址:'+address+'\n'
-            text.append(res)
-            if len(text)>9:
+            store.append(res)
+            if len(store)>9:
                 break
         msg=''
-        for i in text:
+        for i in store:
             msg=msg+i
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=msg))
     except Exception as e:
-        print(e)
+        print("錯誤訊息=",e)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=e))
     
 def add(need,item):
