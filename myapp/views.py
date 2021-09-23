@@ -44,7 +44,8 @@ def callback(request):
                     func.sendLUIS(event,result)
                 elif event.message.type=='location':
                     print("位置訊息=",event)
-                    func.getstore(event,event.message.address)
+                    address = event.message.address
+                    func.getstore(event,address)
                 else:
                     func.getstore(event,mtext)
 
