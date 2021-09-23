@@ -7,6 +7,8 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
 from module import func
+import json
+import requests
 # from invoiceapi.models import users
 # from module import func
 
@@ -28,20 +30,17 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 mtext = event.message.text
+                r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
+                result = r.json()
                 # locationtext=event.message.LocationMessage
                 if mtext == '你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 elif mtext =='使用說明':
-                    func.sendUse(event,mtext)
-                elif mtext=="位置":
-                    line_bot_api.reply_message(event.reply_token,LocationSendMessage(
-                                                title='my location',
-                                                address='Tokyo',
-                                                latitude=35.65910807942215,
-                                                longitude=139.70372892916203
-                                                ))
+                    func.sendUse(event,mtext)          
+                elif result['prediction']['topIntent']=='縣市天氣':
+                    func.sendLUIS(event,result)
                 else:
-                    func.sendLUIS(event,mtext)
+                    func.getstore(event,mtext)
 
         return HttpResponse()
 

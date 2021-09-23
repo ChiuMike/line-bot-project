@@ -61,14 +61,11 @@ def sendUse(event):  #使用說明
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
 
-def sendLUIS(event, mtext):  #LUIS
+def sendLUIS(event, result):  #LUIS
     try:
-        r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='
-             +mtext) 
-        result = r.json()
-        if result['prediction']['topIntent']=='縣市天氣':
-            if result['prediction']['entities']['$instance']['地點'][0]['type']=="地點":
-                city=result['prediction']['entities']['地點'][0]       
+        if result['prediction']['entities']['$instance']['地點'][0]['type']=="地點":
+            city=result['prediction']['entities']['地點'][0]  
+
         iscity=False #判斷市
 
         city=city.replace('台','臺')
