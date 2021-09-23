@@ -32,9 +32,9 @@ def callback(request):
         # else:
         #     isaddress=False
         try:
-            print("EVENTS=",events[0]["message"]['type'])
+            print("EVENTS=",events[0].message.type)
         except:
-            print("EVENTS出錯")
+            print("EVENTS出錯=",type(events))
         
         for event in events:
             if isinstance(event, MessageEvent):
