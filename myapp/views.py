@@ -26,11 +26,12 @@ def callback(request):
             return HttpResponseForbidden()
         except LineBotApiError:
             return HttpResponseBadRequest()
-        if events[0]["message"]['type']=="location":
-            isaddress=True
-            address=events[0]["message"]['address']
-        else:
-            isaddress=False
+        # if events[0]["message"]['type']=="location":
+        #     isaddress=True
+        #     address=events[0]["message"]['address']
+        # else:
+        #     isaddress=False
+        print("EVENTS型態=",type(events))
         for event in events:
             if isinstance(event, MessageEvent):
                 mtext = event.message.text
@@ -45,8 +46,8 @@ def callback(request):
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif isaddress:
-                    func.getstore(event,address)
+                # elif isaddress:
+                #     func.getstore(event,address)
                 else:
                     func.getstore(event,mtext)
 
