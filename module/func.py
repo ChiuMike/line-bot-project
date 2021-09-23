@@ -33,7 +33,11 @@ def getstore(event,mtext):
             opentime=i.find('div',class_="jsx-3440511973 info").text
             category=i.find('div',class_="jsx-3440511973 category-row")
             topic=category.find_all('a',class_="jsx-3440511973 category")
-            res=title+'(' +topic[1].text+')\n'+opentime+'\n地址:'+address+'\n\n'
+            if len(topic)>1:
+                topic=topic[1].text
+            else:
+                topic=''
+            res=title+'(' +topic+')\n'+opentime+'\n地址:'+address+'\n\n'
             store.append(res)
             if len(store)>9:
                 break
@@ -43,7 +47,7 @@ def getstore(event,mtext):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=msg))
     except Exception as e:
         print("錯誤訊息=",e)
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=e))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請重新輸入!"))
     
 def add(need,item):
     need[item['elementName']]=item['time'][0]['parameter']
