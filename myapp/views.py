@@ -43,7 +43,7 @@ def callback(request):
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif event.message.type=="location":
+                elif event.message.type=='location':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='位置'))
                 else:
                     func.getstore(event,mtext)
