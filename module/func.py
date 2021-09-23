@@ -41,8 +41,9 @@ def getstore(event,mtext):
         for i in text:
             msg=msg+i
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=msg))
-    except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
+    except Exception as e:
+        print(e)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=e))
     
 def add(need,item):
     need[item['elementName']]=item['time'][0]['parameter']
