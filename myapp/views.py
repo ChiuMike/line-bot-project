@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage
+from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
 from module import func
 # from invoiceapi.models import users
 # from module import func
@@ -27,14 +27,19 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                mtext = event.message
-                if mtext.text == '你好':
+                mtext = event.message.text
+                # locationtext=event.message.LocationMessage
+                if mtext == '你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
-                elif mtext.text =='使用說明':
+                elif mtext =='使用說明':
                     func.sendUse(event,mtext)
-                elif mtext.location:
-                    text=mtext.location['type']
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text))
+                elif mtext=="位置":
+                    line_bot_api.reply_message(event.reply_token,LocationSendMessage(
+                                                title='my location',
+                                                address='Tokyo',
+                                                latitude=35.65910807942215,
+                                                longitude=139.70372892916203
+                                                ))
                 else:
                     func.sendLUIS(event,mtext)
 
