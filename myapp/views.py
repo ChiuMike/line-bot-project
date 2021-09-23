@@ -27,14 +27,13 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                text2=event.message.location
-                mtext = event.message.text
-                if mtext == '你好':
+                mtext = event.message
+                if mtext.text == '你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
-                elif mtext =='使用說明':
+                elif mtext.text =='使用說明':
                     func.sendUse(event,mtext)
-                elif text2:
-                    text=text2['type']
+                elif mtext.location:
+                    text=mtext.location['type']
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text))
                 else:
                     func.sendLUIS(event,mtext)
