@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
+# from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
+from linebot.models import *
 from module import func
 import json
 import requests
@@ -26,12 +27,6 @@ def callback(request):
             return HttpResponseForbidden()
         except LineBotApiError:
             return HttpResponseBadRequest()
-
-        if events[0].message.type=="location":
-            isaddress=True
-            address=events[0].message.address
-        else:
-            isaddress=False
         
         for event in events:
             if isinstance(event, MessageEvent):
@@ -47,8 +42,9 @@ def callback(request):
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif isaddress:
-                    func.getstore(event,address)
+                elif event.message.type=='location':
+                    print("位置訊息=",event)
+                    func.getstore(event,event.message.address)
                 else:
                     func.getstore(event,mtext)
 
