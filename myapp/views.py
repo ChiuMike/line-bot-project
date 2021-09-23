@@ -42,13 +42,12 @@ def callback(request):
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif event.message.type=='location':
-                    print("位置訊息=",event)
-                    address = event.message.address
-                    func.getstore(event,address)
                 else:
                     func.getstore(event,mtext)
-
+            elif isinstance(event, LocationMessage):
+                if event.message.type=='location':
+                    address = event.message.address
+                    func.getstore(event,address)                  
         return HttpResponse()
 
     else:
