@@ -37,8 +37,8 @@ def callback(request):
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 elif mtext =='使用說明':
                     func.sendUse(event,mtext)          
-                elif result['prediction']['topIntent']=='縣市天氣':
-                    func.sendLUIS(event,result)
+                # elif result['prediction']['topIntent']=='縣市天氣':
+                #     func.sendLUIS(event,result)
                 else:
                     func.getstore(event,mtext)
 
