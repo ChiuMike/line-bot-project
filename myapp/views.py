@@ -30,7 +30,7 @@ def callback(request):
         
         for event in events:
             if isinstance(event, MessageEvent):
-                print(event.message)
+                print(event.message.type,type(event.message.type))
                 mtext = event.message.text
                 r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
                 result = r.json()
