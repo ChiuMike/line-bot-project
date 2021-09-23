@@ -36,21 +36,15 @@ def callback(request):
                 result = r.json()
                 score=result['prediction']['intents']['縣市天氣']['score']
                 en=result['prediction']['entities']
-                # locationtext=event.message.LocationMessage
-                if event.message.type=='location':
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='位置'))
+                
+                if mtext=='你好':
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 elif mtext =='使用說明':
                     func.sendUse(event,mtext)          
                 elif score>=0.95 and '天氣' in en:
                     func.sendLUIS(event,result)
-                elif mtext=='你好':
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 else:
-                    func.getstore(event,mtext)
-            # elif isinstance(event, LocationMessage):
-            #     if event.message.type=='location':
-            #         address = event.message.address
-            #         func.getstore(event,address)                  
+                    func.getstore(event,mtext)               
         return HttpResponse()
 
     else:
