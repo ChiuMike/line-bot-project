@@ -31,7 +31,11 @@ def callback(request):
         #     address=events[0]["message"]['address']
         # else:
         #     isaddress=False
-        print("EVENTS型態=",type(events))
+        try:
+            print("EVENTS=",events[0]["message"]['type'])
+        except:
+            print("EVENTS出錯")
+        
         for event in events:
             if isinstance(event, MessageEvent):
                 mtext = event.message.text
