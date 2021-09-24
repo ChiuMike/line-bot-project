@@ -90,7 +90,7 @@ def add(need,item):
     need[item['elementName']]=item['time'][0]['parameter']
     return need
 
-def sendUse(event):  #使用說明
+def sendUse(event,mtext):  #使用說明
     try:
         text1 ='''
 查詢天氣：輸入「XXXX天氣如何?」，例如「高雄天氣如何?」
