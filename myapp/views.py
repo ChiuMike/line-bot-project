@@ -45,8 +45,8 @@ def callback(request):
                             en=result['prediction']['entities']['地點'][0]    
                         elif result['prediction']['topIntent']=='moviequery':
                             s=result['prediction']['topIntent']
-                            score=result['prediction']['intents'][s]['score']
-                            en=result['prediction']['entities']['電影名稱'][0]
+                            score2=result['prediction']['intents'][s]['score']
+                            en2=result['prediction']['entities']['電影名稱'][0]
                     except:
                         mtext = event.message.text
                     try:
@@ -54,10 +54,10 @@ def callback(request):
                             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                         elif mtext =='使用說明':
                             func.sendUse(event,mtext)          
-                        elif score>=0.95 and '地點' in result['prediction']['entities']:
+                        elif score>0.9 and '地點' in result['prediction']['entities']:
                             func.sendLUIS(event,en)
-                        elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
-                            func.movieTime(event,en)
+                        elif score2>=0.95  and '電影名稱' in result['prediction']['entities']:
+                            func.movieTime(event,en2)
                         elif mtext=="@movie":
                             func.new_movies(event,mtext)
                         else:
