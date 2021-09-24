@@ -40,10 +40,12 @@ def callback(request):
                         r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
                         result = r.json()
                         if result['prediction']['topIntent']=='縣市天氣':
+                            global score,en
                             s=result['prediction']['topIntent']
                             score=result['prediction']['intents'][s]['score']
                             en=result['prediction']['entities']['地點'][0]    
                         elif result['prediction']['topIntent']=='moviequery':
+                            global score2,en2
                             s=result['prediction']['topIntent']
                             score2=result['prediction']['intents'][s]['score']
                             en2=result['prediction']['entities']['電影名稱'][0]
