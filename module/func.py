@@ -34,19 +34,16 @@ def new_movies(event,mtext):
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行時出錯，請重新輸入!'))
 
-def movieTime(event,areaCode):
+def movieTime(event,en):
     try:
-        en=areaCode.split('/')[1]
-        code=areaCode.split('/')[0]+'/'
         url_new='http://www.atmovies.com.tw/movie/new/'
         r=requests.get(url_new)
         resp=BeautifulSoup(r.content,'lxml')
         a_tags = resp.find_all('a')
         for tag in a_tags:
             if ('/movie/' in tag.get('href')) and en in tag.text:
-                time=tag.get('href')
-                name=time.split('movie/')[1]
-        reply='http://www.atmovies.com.tw/showtime/'+name+code
+                name=tag.get('href')
+        reply='http://www.atmovies.com.tw/'+name
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply))
     except Exception as e:
         print("錯誤訊息=",e)
