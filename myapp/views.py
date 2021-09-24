@@ -47,94 +47,94 @@ def callback(request):
                             s=result['prediction']['topIntent']
                             score=result['prediction']['intents'][s]['score']
                             en=result['prediction']['entities']['電影名稱'][0]
-                        if mtext=='你好':
-                            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
-                        elif mtext =='使用說明':
-                            func.sendUse(event,mtext)          
-                        elif score>=0.95 and '地點' in result['prediction']['entities']:
-                            func.sendLUIS(event,en)
-                        elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
-                            temp=en
-                            line_bot_api.reply_message(  # 回復傳入的訊息文字
-                            event.reply_token,
-                            TemplateSendMessage(
-                                alt_text='Buttons template',
-                                template=ButtonsTemplate(
-                                    title='選單',
-                                    text='請選擇地區',
-                                    actions=[
-                                        PostbackTemplateAction(
-                                            label='基隆',
-                                            data='a01/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='台北',
-                                            data='a02/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='桃園',
-                                            data='a03/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='新竹',
-                                            data='a35/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='苗栗',
-                                            data='a37/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='台中',
-                                            data='a04/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='彰化',
-                                            data='a47/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='雲林',
-                                            data='a45/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='嘉義',
-                                            data='a05/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='台南',
-                                            data='a06/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='高雄',
-                                            data='a07/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='屏東',
-                                            data='a87/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='宜蘭',
-                                            data='a39/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='花蓮',
-                                            data='a38/'+temp
-                                        ),
-                                        PostbackTemplateAction(
-                                            label='台東',
-                                            data='a89/'+temp
-                                        ),
-                                    ]
-                                )
-                            ))
-                        else:
-                            func.getstore(event,mtext)   
-                    except Exception as e:
-                        print("錯誤訊息=",e)
+                    except:
+                        mtext = event.message.text
+                    if mtext=='你好':
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
+                    elif mtext =='使用說明':
+                        func.sendUse(event,mtext)          
+                    elif score>=0.95 and '地點' in result['prediction']['entities']:
+                        func.sendLUIS(event,en)
+                    elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
+                        temp=en
+                        line_bot_api.reply_message(  # 回復傳入的訊息文字
+                        event.reply_token,
+                        TemplateSendMessage(
+                            alt_text='Buttons template',
+                            template=ButtonsTemplate(
+                                title='選單',
+                                text='請選擇地區',
+                                actions=[
+                                    PostbackTemplateAction(
+                                        label='基隆',
+                                        data='a01/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='台北',
+                                        data='a02/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='桃園',
+                                        data='a03/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='新竹',
+                                        data='a35/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='苗栗',
+                                        data='a37/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='台中',
+                                        data='a04/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='彰化',
+                                        data='a47/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='雲林',
+                                        data='a45/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='嘉義',
+                                        data='a05/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='台南',
+                                        data='a06/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='高雄',
+                                        data='a07/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='屏東',
+                                        data='a87/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='宜蘭',
+                                        data='a39/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='花蓮',
+                                        data='a38/'+temp
+                                    ),
+                                    PostbackTemplateAction(
+                                        label='台東',
+                                        data='a89/'+temp
+                                    ),
+                                ]
+                            )
+                        ))
+                    else:
+                        func.getstore(event,mtext)   
                         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
             elif  isinstance(event, PostbackEvent):
                 areaCode=event.postback.data
                 func.movieTime(event,areaCode)
-                
+
         return HttpResponse()
 
     else:
