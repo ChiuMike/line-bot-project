@@ -15,6 +15,43 @@ cities = ["臺北","新北","桃園","臺中","臺南","高雄","基隆","新竹
 counties = ["苗栗","彰化","南投","雲林","嘉義","屏東","宜蘭","花蓮","臺東","澎湖","金門","連江"]  #縣
 GOOGLE_PLACES_API_KEY='AIzaSyBv5_PtgBFnbp9vpQ5l76isoHu0_fGlUUg'
 gmaps = googlemaps.Client(GOOGLE_PLACES_API_KEY)
+
+def new_movies(event,mtext):
+    try:
+        url_new='http://www.atmovies.com.tw/movie/new/'
+        r=requests.get(url_new)
+        resp=BeautifulSoup(r.content,'lxml')
+        newMovies=[]
+        a_tags = resp.find_all('a')
+        for tag in a_tags : 
+            if ('/movie/' in tag.get('href')) and (len(tag.get('href')) == 20) and (tag.text != ""):
+                newMovies.append(tag.text)
+        text = '來看看本週有什麼新片吧 : \n'
+        for i, movie in enumerate(newMovies):
+            show = f'{i+1}. {movie.split(" ")[0]}' + '\n'
+            text += show
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行時出錯，請重新輸入!'))
+
+def movieTime(event,areaCode):
+    try:
+        en=areaCode.split('/')[1]
+        code=areaCode.split('/')[0]+'/'
+        url_new='http://www.atmovies.com.tw/movie/new/'
+        r=requests.get(url_new)
+        resp=BeautifulSoup(r.content,'lxml')
+        a_tags = resp.find_all('a')
+        for tag in a_tags:
+            if ('/movie/' in tag.get('href')) and en in tag.text:
+                time=tag.get('href')
+                name=time.split('movie/')[1]
+        reply='http://www.atmovies.com.tw/showtime/'+name+code
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply))
+    except Exception as e:
+        print("錯誤訊息=",e)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='重新輸入電影'))
+
 def getstore(event,mtext):
     try:
         geocode = gmaps.geocode(mtext, language='zh-TW')
@@ -66,14 +103,11 @@ def sendUse(event):  #使用說明
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
 
-def sendLUIS(event, result):  #LUIS
+def sendLUIS(event, en):  #LUIS
     try:
-        if result['prediction']['entities']['$instance']['地點'][0]['type']=="地點":
-            city=result['prediction']['entities']['地點'][0]  
-
         iscity=False #判斷市
 
-        city=city.replace('台','臺')
+        city=en.replace('台','臺')
         if '市' in city:
             iscity=True
         elif '縣' in city:
