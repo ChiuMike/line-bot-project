@@ -36,7 +36,7 @@ def callback(request):
                 result = r.json()
                 score=result['prediction']['intents']['縣市天氣']['score']
                 en=result['prediction']['entities']
-                print(event.message,type(event.message.type))
+                print("內容=",event.message.text)
                 if mtext=='你好':
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
                 elif mtext =='使用說明':
