@@ -16,8 +16,11 @@ import requests
 # Create your views here.
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
+score=0
+en=''
 @csrf_exempt
 def callback(request):
+    global score,en
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
@@ -40,15 +43,13 @@ def callback(request):
                         r = requests.get('https://linebotproject.cognitiveservices.azure.com/luis/prediction/v3.0/apps/8a396cdc-190f-49e6-aec4-cd31f04029e0/slots/staging/predict?subscription-key=8fa62ff1ff354f64aa1aef460f685dee&verbose=true&show-all-intents=true&log=true&query='+mtext) 
                         result = r.json()
                         if result['prediction']['topIntent']=='縣市天氣':
-                            global score,en
                             s=result['prediction']['topIntent']
                             score=result['prediction']['intents'][s]['score']
                             en=result['prediction']['entities']['地點'][0]    
                         elif result['prediction']['topIntent']=='moviequery':
-                            global score2,en2
                             s=result['prediction']['topIntent']
-                            score2=result['prediction']['intents'][s]['score']
-                            en2=result['prediction']['entities']['電影名稱'][0]
+                            score=result['prediction']['intents'][s]['score']
+                            en=result['prediction']['entities']['電影名稱'][0]
                     except:
                         mtext = event.message.text
                     try:
@@ -58,8 +59,8 @@ def callback(request):
                             func.sendUse(event,mtext)          
                         elif score>0.9 and '地點' in result['prediction']['entities']:
                             func.sendLUIS(event,en)
-                        elif score2>=0.95  and '電影名稱' in result['prediction']['entities']:
-                            func.movieTime(event,en2)
+                        elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
+                            func.movieTime(event,en)
                         elif mtext=="@movie":
                             func.new_movies(event,mtext)
                         else:
