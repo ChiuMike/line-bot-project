@@ -58,7 +58,7 @@ def callback(request):
                             func.sendLUIS(event,en)
                         elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
                             func.movieTime(event,en)
-                        elif mtext=="@電影":
+                        elif mtext=="@movie":
                             func.new_movies(event,mtext)
                         else:
                             func.getstore(event,mtext)   
