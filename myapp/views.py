@@ -94,9 +94,9 @@ def callback(request):
                                     ]
                             )))
                         elif len(mtext) == 3 and mtext.isdigit():
-                            func.show3digit(event, mtext, userid)
+                            invoice.show3digit(event, mtext, userid)
                         elif len(mtext) == 5 and mtext.isdigit():
-                            func.show5digit(event, mtext, userid)
+                            invoice.show5digit(event, mtext, userid)
                         else:
                             func.getstore(event,mtext)   
                             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
