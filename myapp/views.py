@@ -75,10 +75,7 @@ def callback(request):
                         elif mtext=="@food":
                             func.sendFoodUse(event,mtext)
                         elif mtext=="@invoice":
-                            text='''
-1. 「對獎」功能會提示使用者輸入發票最後三碼，若最後三碼有中獎，就提示使用者輸入發票前五碼。
-2. 為方便使用者輸入，也可以直接輸入發票最後三碼直接對獎 (不需按「對獎」項目)。                       
-                                 '''
+                            text=f'此功能會提示您輸入發票後三碼，若後三碼有中獎，就提示您輸入發票前五碼。'                
                             line_bot_api.reply_message(  # 回復傳入的訊息文字
                             event.reply_token,
                             TemplateSendMessage(
