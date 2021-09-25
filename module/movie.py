@@ -8,7 +8,7 @@ from functools import reduce
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 
-def new_movies(event,mtext):
+def new_movies(event): #取得本周新片網頁所有片名回傳給用戶
     try:
         url_new='http://www.atmovies.com.tw/movie/new/'
         r=requests.get(url_new)
@@ -37,11 +37,21 @@ def movieTime(event,en):
         r=requests.get(url_new)
         resp=BeautifulSoup(r.content,'lxml')
         a_tags = resp.find_all('a')
+        #取得本周新片網頁所有片名標籤的href，並回傳給使用者
         for tag in a_tags:
             if ('/movie/' in tag.get('href')) and en in tag.text:
                 name=tag.get('href')
         reply='http://www.atmovies.com.tw/'+name
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply))
     except Exception as e:
-        print("錯誤訊息=",e)
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='重新輸入電影'))
+        #如果使用者輸入的片名有錯字或不包含在本周新片中
+        replyarr=[]
+        text=f'{en}不在本周新片當中耶!\n要不要重新輸入一次!'
+        sticker={ #定義貼圖
+            'type': 'sticker',
+            'packageId': '789',
+            'stickerId': '10877'
+        }
+        replyarr.append(TextSendMessage(text=text))
+        replyarr.append(TextSendMessage(text=sticker))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=replyarr))

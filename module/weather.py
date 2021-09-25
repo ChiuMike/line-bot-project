@@ -31,7 +31,7 @@ def add(need,item):
 
 def sendLUIS(event, en):  #LUIS
     try:
-        iscity=False #判斷市
+        iscity=False #判斷是否為市或縣
 
         city=en.replace('台','臺')
         if '市' in city:
@@ -47,7 +47,7 @@ def sendLUIS(event, en):  #LUIS
         api_link="https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-0B5EC65C-E060-4E55-96B4-CBD8E27F46E1&format=JSON&locationName="+city
         report =requests.get(api_link).json()
         locationData=report['records']['location'][0]['weatherElement']
-        locationData=reduce(add,locationData)
+        locationData=reduce(add,locationData) #使用reduce取出需要回傳的部分
         target={}
         target["天氣狀況"]=locationData['time'][0]['parameter']['parameterName']
         target["最高溫"]=locationData["MaxT"]['parameterName']+'度'

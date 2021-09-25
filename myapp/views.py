@@ -69,7 +69,7 @@ def callback(request):
                         elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
                             movie.movieTime(event,en)
                         elif mtext=="@movie":
-                            movie.new_movies(event,mtext)
+                            movie.new_movies(event)
                         elif mtext=="@weather":
                             weather.sendWeatherUse(event,mtext)
                         elif mtext=="@food":
@@ -104,10 +104,13 @@ def callback(request):
                             invoice.show5digit(event, mtext, userid)
                         else:
                             func.getstore(event,mtext)   
-                            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
+                            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行錯誤，請重新輸入!'))
                     except Exception as e:
                         print("錯誤訊息=",e)
-                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
+                        text='''您好！
+                                感謝您成為生活小助手的好友！
+                                想要「查詢附近美食」、「發票兌獎」、「查詢天氣」、「查詢電影」都歡迎問我喔!'''
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
             
             elif isinstance(event, PostbackEvent):
                 if event.postback.data=="本期":
@@ -117,7 +120,7 @@ def callback(request):
                 elif event.postback.data=="輸入":
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請輸入發票最後三碼進行對獎！'))
                 else:
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='ERROR'))
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行錯誤，請重新輸入!'))
 
         return HttpResponse()
 
