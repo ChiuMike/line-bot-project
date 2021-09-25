@@ -45,8 +45,5 @@ def movieTime(event,en):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply))
     except Exception as e:
         #如果使用者輸入的片名有錯字或不包含在本周新片中
-        replyarr=[]
         text=f'{en}不在本周新片當中耶!\n要不要重新輸入一次!'
-        replyarr.append(TextSendMessage(text=text))
-        replyarr.append(StickerSendMessage(package_id= '789',sticker_id= '10877'))
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=replyarr))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
