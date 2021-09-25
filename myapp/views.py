@@ -36,6 +36,9 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 userid = event.source.user_id
+                if not users.objects.filter(uid=userid).exists():
+                    unit = users.objects.create(uid=userid, state='no')
+                    unit.save()
                 if event.message.type=='location':
                     address = event.message.address
                     print("位置=",address)
