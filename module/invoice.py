@@ -75,7 +75,8 @@ def show3digit(event, mtext, userid):
         else:
             message = '很可惜，未中獎。請輸入下一張發票最後三碼。'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
-    except:
+    except Exception as e:
+        print("發票錯誤=",e)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='讀取發票號碼發生錯誤！'))
 
 def show5digit(event, mtext, userid):
