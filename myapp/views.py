@@ -63,6 +63,10 @@ def callback(request):
                             func.movieTime(event,en)
                         elif mtext=="@movie":
                             func.new_movies(event,mtext)
+                        elif mtext=="@weather":
+                            func.sendWeatherUse(event,mtext)
+                        elif mtext=="@food":
+                            func.sendFoodUse(event,mtext)
                         else:
                             func.getstore(event,mtext)   
                             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))

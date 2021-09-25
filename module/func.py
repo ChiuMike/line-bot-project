@@ -16,6 +16,33 @@ counties = ["苗栗","彰化","南投","雲林","嘉義","屏東","宜蘭","花�
 GOOGLE_PLACES_API_KEY='AIzaSyBv5_PtgBFnbp9vpQ5l76isoHu0_fGlUUg'
 gmaps = googlemaps.Client(GOOGLE_PLACES_API_KEY)
 
+def sendWeatherUse(event,mtext):  #使用說明
+    try:
+        text1 ='''
+查詢天氣：輸入「縣市名稱」+「天氣詢問詞」
+         例如「高雄天氣如何?」
+         例如「台中有下雨嗎?」
+               '''
+        message = TextSendMessage(
+            text = text1
+        )
+        line_bot_api.reply_message(event.reply_token,message)
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
+
+def sendFoodUse(event,mtext):
+    try:
+        text1 ='''
+查詢附近：輸入「地址資訊」或「傳送line位置資訊」
+         即可獲得附近評價最高的餐廳資訊喔!
+               '''
+        message = TextSendMessage(
+            text = text1
+        )
+        line_bot_api.reply_message(event.reply_token,message)
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
+
 def new_movies(event,mtext):
     try:
         url_new='http://www.atmovies.com.tw/movie/new/'
@@ -31,6 +58,18 @@ def new_movies(event,mtext):
             show = f'{i+1}. {movie.split(" ")[0]}' + '\n'
             text += show
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
+        try:
+            text1 ='''
+        查詢電影：輸入「本周新片片名」+「場次資訊」
+                例如「xxx場次」或「xxx時刻」或「xxx電影場次」
+                即可獲得該片的電影時刻資訊喔!
+                    '''
+            message = TextSendMessage(
+                text = text1
+            )
+            line_bot_api.reply_message(event.reply_token,message)
+        except:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行時出錯，請重新輸入!'))
 
@@ -87,18 +126,6 @@ def add(need,item):
     need[item['elementName']]=item['time'][0]['parameter']
     return need
 
-def sendUse(event,mtext):  #使用說明
-    try:
-        text1 ='''
-查詢天氣：輸入「XXXX天氣如何?」，例如「高雄天氣如何?」
-         輸入「XXXX有下雨嗎?」，例如「台中有下雨嗎?」
-               '''
-        message = TextSendMessage(
-            text = text1
-        )
-        line_bot_api.reply_message(event.reply_token,message)
-    except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
 
 def sendLUIS(event, en):  #LUIS
     try:
@@ -128,4 +155,4 @@ def sendLUIS(event, en):  #LUIS
         weather=city+'天氣狀況: '+target["天氣狀況"]+'\n'+'最高溫: '+target["最高溫"]+'\n'+'最低溫: '+target["最低溫"]+'\n'+'降雨機率: '+target["降雨機率"]+'\n'+'舒適度: '+target["舒適度"]+'\n'
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=weather))
     except:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='執行時產生錯誤！請重新輸入!'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='無此地點天氣資料!請重新輸入!'))
