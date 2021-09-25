@@ -67,12 +67,46 @@ def callback(request):
                             func.sendWeatherUse(event,mtext)
                         elif mtext=="@food":
                             func.sendFoodUse(event,mtext)
+                        elif mtext=="@invoice":
+                            line_bot_api.reply_message(  # 回復傳入的訊息文字
+                            event.reply_token,
+                            TemplateSendMessage(
+                                alt_text='Buttons template',
+                                template=ButtonsTemplate(
+                                    title='Menu',
+                                    text='請選擇',
+                                    actions=[
+                                        PostbackTemplateAction(
+                                            label='本期中獎號碼',
+                                            data='本期'
+                                        ),
+                                        PostbackTemplateAction(
+                                            label='前期中獎號碼',
+                                            data='前期'
+                                        ),
+                                        PostbackTemplateAction(
+                                            label='輸入發票最後三碼',
+                                            data='輸入'
+                                        ),
+                                    ]
+                            )))
                         else:
                             func.getstore(event,mtext)   
                             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
                     except Exception as e:
                         print("錯誤訊息=",e)
                         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
+            
+            elif isinstance(event, PostbackEvent):
+                if event.postback.data=="本期":
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='本期'))
+                elif event.postback.data=="前期":
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='前期'))
+                elif event.postback.data=="輸入":
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='輸入'))
+                else:
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='ERROR'))
+
         return HttpResponse()
 
     else:

@@ -29,9 +29,7 @@ def sendWeatherUse(event,mtext):  #使用說明
 
 def sendFoodUse(event,mtext):
     try:
-        text1 ='''
-查詢附近餐廳：\n輸入「地址資訊」或「傳送line位置資訊」即可獲得附近評價最高的餐廳資訊喔!
-               '''
+        text1 =f'查詢附近餐廳：\n輸入「地址資訊」或「傳送line位置資訊」即可獲得附近評價最高的餐廳資訊喔!'    
         message = TextSendMessage(
             text = text1
         )
@@ -141,7 +139,7 @@ def sendLUIS(event, en):  #LUIS
         target["最低溫"]=locationData["MinT"]['parameterName']+'度'
         target["降雨機率"]=locationData["PoP"]['parameterName']+'%'
         target["舒適度"]=locationData["CI"]['parameterName']
-        weather=city+'天氣狀況: '+target["天氣狀況"]+'\n'+'最高溫: '+target["最高溫"]+'\n'+'最低溫: '+target["最低溫"]+'\n'+'降雨機率: '+target["降雨機率"]+'\n'+'舒適度: '+target["舒適度"]+'\n'
+        weather=city+'天氣狀況: '+target["天氣狀況"]+'\n'+'最高溫: '+target["最高溫"]+'\n'+'最低溫: '+target["最低溫"]+'\n'+'降雨機率: '+target["降雨機率"]+'\n'+'舒適度: '+target["舒適度"]
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=weather))
     except:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='無此地點天氣資料!請重新輸入!'))
