@@ -7,13 +7,13 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 # from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
 from linebot.models import *
-from module import func
-from module import invoice
 import json
 import requests
 from myapp.models import users
-# from invoiceapi.models import users
-# from module import func
+from module import func
+from module import invoice
+from module import movie
+from module import weather
 
 # Create your views here.
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
@@ -60,27 +60,32 @@ def callback(request):
                         mtext = event.message.text
                     try:
                         if mtext=='你好':
-                            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你好'))
+                            text="可以點選圖文選單看看有什麼功能喔!"
+                            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
                         elif mtext =='使用說明':
                             func.sendUse(event,mtext)          
                         elif score>0.9 and '地點' in result['prediction']['entities']:
-                            func.sendLUIS(event,en)
+                            weather.sendLUIS(event,en)
                         elif score>=0.95  and '電影名稱' in result['prediction']['entities']:
-                            func.movieTime(event,en)
+                            movie.movieTime(event,en)
                         elif mtext=="@movie":
-                            func.new_movies(event,mtext)
+                            movie.new_movies(event,mtext)
                         elif mtext=="@weather":
-                            func.sendWeatherUse(event,mtext)
+                            weather.sendWeatherUse(event,mtext)
                         elif mtext=="@food":
                             func.sendFoodUse(event,mtext)
                         elif mtext=="@invoice":
+                            text='''
+1. 「對獎」功能會提示使用者輸入發票最後三碼，若最後三碼有中獎，就提示使用者輸入發票前五碼。
+2. 為方便使用者輸入，也可以直接輸入發票最後三碼直接對獎 (不需按「對獎」項目)。                       
+                                 '''
                             line_bot_api.reply_message(  # 回復傳入的訊息文字
                             event.reply_token,
                             TemplateSendMessage(
                                 alt_text='Buttons template',
                                 template=ButtonsTemplate(
                                     title='Menu',
-                                    text='請選擇',
+                                    text=text,
                                     actions=[
                                         PostbackTemplateAction(
                                             label='本期中獎號碼',
