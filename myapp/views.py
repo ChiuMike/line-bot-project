@@ -108,8 +108,8 @@ def callback(request):
                     except Exception as e:
                         print("錯誤訊息=",e)
                         text='''您好！
-                                感謝您成為生活小助手的好友！
-                                想要「查詢附近美食」、「發票兌獎」、「查詢天氣」、「查詢電影」都歡迎問我喔!'''
+感謝您成為生活小助手的好友！
+想要「查詢附近美食」、「發票兌獎」、「查詢天氣」、「查詢電影」都歡迎問我喔!'''
                         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
             
             elif isinstance(event, PostbackEvent):

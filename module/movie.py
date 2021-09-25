@@ -1,6 +1,6 @@
 from django.conf import settings
 from linebot import LineBotApi
-from linebot.models import TextSendMessage
+from linebot.models import *
 from bs4 import BeautifulSoup
 import json
 import requests
@@ -47,11 +47,6 @@ def movieTime(event,en):
         #如果使用者輸入的片名有錯字或不包含在本周新片中
         replyarr=[]
         text=f'{en}不在本周新片當中耶!\n要不要重新輸入一次!'
-        sticker={ #定義貼圖
-            'type': 'sticker',
-            'packageId': '789',
-            'stickerId': '10877'
-        }
         replyarr.append(TextSendMessage(text=text))
-        replyarr.append(TextSendMessage(text=sticker))
+        replyarr.append(StickerSendMessage(package_id= '789',sticker_id= '10877'))
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=replyarr))
