@@ -8,8 +8,10 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 # from linebot.models import MessageEvent, TextSendMessage,LocationSendMessage
 from linebot.models import *
 from module import func
+from module import invoice
 import json
 import requests
+from myapp.models import users
 # from invoiceapi.models import users
 # from module import func
 
@@ -33,6 +35,7 @@ def callback(request):
         
         for event in events:
             if isinstance(event, MessageEvent):
+                userid = event.source.user_id
                 if event.message.type=='location':
                     address = event.message.address
                     print("位置=",address)
@@ -90,6 +93,10 @@ def callback(request):
                                         ),
                                     ]
                             )))
+                        elif len(mtext) == 3 and mtext.isdigit():
+                            func.show3digit(event, mtext, userid)
+                        elif len(mtext) == 5 and mtext.isdigit():
+                            func.show5digit(event, mtext, userid)
                         else:
                             func.getstore(event,mtext)   
                             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤'))
@@ -99,11 +106,11 @@ def callback(request):
             
             elif isinstance(event, PostbackEvent):
                 if event.postback.data=="本期":
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='本期'))
+                    invoice.showCurrent(event)
                 elif event.postback.data=="前期":
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='前期'))
+                    invoice.showOld(event)
                 elif event.postback.data=="輸入":
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='輸入'))
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請輸入發票最後三碼進行對獎！'))
                 else:
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text='ERROR'))
 
