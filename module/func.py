@@ -18,7 +18,7 @@ gmaps = googlemaps.Client(GOOGLE_PLACES_API_KEY)
 
 def sendWeatherUse(event,mtext):  #使用說明
     try:
-        text1 =f'查詢天氣：\n輸入「縣市名稱」+「天氣詢問詞」例如「高雄天氣如何?」例如「台中有下雨嗎?」'
+        text1 =f'查詢天氣：\n輸入「縣市名稱」+「天氣詢問詞」\n例如「高雄天氣如何?」例如「台中有下雨嗎?」'
                
         message = TextSendMessage(
             text = text1
@@ -27,7 +27,7 @@ def sendWeatherUse(event,mtext):  #使用說明
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤！請重新輸入。'))
 
-def sendFoodUse(event):
+def sendFoodUse(event,mtext):
     try:
         text1 ='''
 查詢附近餐廳：\n輸入「地址資訊」或「傳送line位置資訊」即可獲得附近評價最高的餐廳資訊喔!
@@ -45,6 +45,7 @@ def new_movies(event,mtext):
         r=requests.get(url_new)
         resp=BeautifulSoup(r.content,'lxml')
         newMovies=[]
+        replyarr=[]
         a_tags = resp.find_all('a')
         for tag in a_tags : 
             if ('/movie/' in tag.get('href')) and (len(tag.get('href')) == 20) and (tag.text != ""):
@@ -53,12 +54,11 @@ def new_movies(event,mtext):
         for i, movie in enumerate(newMovies):
             show = f'{i+1}. {movie.split(" ")[0]}' + '\n'
             text += show
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=text))
-        #     text1 ='''
-        # 查詢電影：輸入「本周新片片名」+「場次資訊」
-        #         例如「xxx場次」或「xxx時刻」或「xxx電影場次」
-        #         即可獲得該片的電影時刻資訊喔!
-        #             '''
+        text1 =f'查詢電影：\n輸入「本周新片片名」+「場次資訊」\n例如「xxx場次」或「xxx時刻」或「xxx電影場次」\n即可獲得該片的電影時刻資訊喔!'
+        replyarr.append(TextSendMessage(text=text))
+        replyarr.append(TextSendMessage(text=text1))
+        line_bot_api.reply_message(event.reply_token,replyarr)
+        
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='執行時出錯，請重新輸入!'))
 
