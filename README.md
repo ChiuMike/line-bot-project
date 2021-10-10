@@ -39,6 +39,6 @@ Line生活小助手聊天機器人，功能包括:「查詢附近美食」、「
 利用LUIS來判斷使用者意圖，如果意圖為查詢電影即會回傳該電影的場次資訊。  
 <img src="https://upload.cc/i1/2021/09/25/CTUtqV.jpg" alt="Cover" width="30%"/>  
 
-如果使用者的輸入有錯字或不在本周新片中則會請對方重新輸入。  
+如果使用者的輸入有錯字或不在本周新片中則會請對方重新輸入。   
 <img src="https://upload.cc/i1/2021/09/25/3sEQde.jpg" alt="Cover" width="30%"/>  
 
